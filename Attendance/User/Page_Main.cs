@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Attendance
 {
@@ -35,7 +36,7 @@ namespace Attendance
         }
         static void Connection()
         {
-            String connStr = "server=localhost;user=root;database=attendance;password=";
+            String connStr = "server=" + Program.sever.ToString() + ";" + "user=" + Program.username.ToString() + ";" + "database=" + Program.database.ToString() + ";" + "password=" + Program.password.ToString() + ";";
             try
             {
                 conn = new MySqlConnection(connStr);
@@ -161,7 +162,7 @@ namespace Attendance
         {
             SetDefauldate();
         }
-        
+
         private void btnDay_Click(object sender, EventArgs e)
         {
 
@@ -183,18 +184,42 @@ namespace Attendance
             int Result; // Biến chứa giá trị kết quả khi ép kiểu thành công
             var s = ((Button)sender).Text;
             Result = int.Parse(s);
-            
-
-        
-            DateTime btn_date = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month,Result);
-            MessageBox.Show(btn_date.ToString());
-
-            string msg = "";
-            // MessageBox.Show(List.ToString());
-         
 
 
 
+            String btn_date = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, Result).ToString();
+            String id = Program.id.ToString();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
+                MySqlDataReader Reader = mySqlCommand.ExecuteReader();
+
+                while (Reader.Read())
+                {
+                    if (btn_date.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
+                    {
+                        String subject = Reader.GetString("subject");
+                        String shift = Reader.GetString("shift");
+                        MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
+                    }
+                    else
+                    {
+                        ;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
         //button thong tin
         private void btnInfor_Click(object sender, EventArgs e)

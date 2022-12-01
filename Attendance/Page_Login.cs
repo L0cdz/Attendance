@@ -1,6 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using MySql.Data.MySqlClient;
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml.Linq;
 
 namespace Attendance
 {
@@ -25,17 +27,16 @@ namespace Attendance
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         static void Connection()
         {
-            String connStr = "server=localhost;user=root;database=attendance;password=";
+            String connStr = "server=" + Program.sever.ToString() + ";" + "user=" + Program.username.ToString() + ";" + "database=" + Program.database.ToString()+ ";" + "password=" + Program.password.ToString() + ";";
             try
             {
                 conn = new MySqlConnection(connStr);
                 conn.Open();
-               // MessageBox.Show("Connection Open");
+              //  MessageBox.Show("Connection Open");
             }
             catch(Exception ex)
             {

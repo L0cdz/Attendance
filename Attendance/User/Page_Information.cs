@@ -27,7 +27,7 @@ namespace Attendance
        
         static void Connection()
         {
-            String connStr = "server=localhost;user=root;database=attendance;password=";
+            String connStr = "server=" + Program.sever.ToString() + ";" + "user=" + Program.username.ToString() + ";" + "database=" + Program.database.ToString() + ";" + "password=" + Program.password.ToString() + ";";
             try
             {
                 conn = new MySqlConnection(connStr);

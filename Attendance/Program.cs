@@ -2,7 +2,7 @@ namespace Attendance
 {
     internal static class Program
     {
-        public static String id,name,pwd,email,sdt;
+        public static String id,name,pwd,email,sdt,sever,database,username,password;
         
         /// <summary>
         ///  The main entry point for the application.
@@ -13,7 +13,7 @@ namespace Attendance
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Page_Login());
+            Application.Run(new Config());
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Attendance
 
         static void Connection()
         {
-            String connStr = "server=localhost;user=root;database=attendance;password=";
+            String connStr = "server=" + Program.sever.ToString() + ";" + "user=" + Program.username.ToString() + ";" + "database=" + Program.database.ToString() + ";" + "password=" + Program.password.ToString() + ";";
             try
             {
                 conn = new MySqlConnection(connStr);
@@ -117,6 +117,7 @@ namespace Attendance
                     btn.Enabled = false;
 
                 }
+                btn.Click += new System.EventHandler(this.btnDay_Click);
                 if (column >= 6)
                 {
                     line++;
@@ -143,11 +144,63 @@ namespace Attendance
         {
             dateTimePicker.Value = DateTime.Now;
         }
-       
 
-     
 
-       
+
+        private void btnDay_Click(object sender, EventArgs e)
+        {
+
+            Connection();
+           
+
+
+            int Result; // Biến chứa giá trị kết quả khi ép kiểu thành công
+            var s = ((Button)sender).Text;
+            Result = int.Parse(s);
+
+
+
+            String btn_date = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, Result).ToString();
+            String id = Program.id.ToString();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
+                MySqlDataReader Reader = mySqlCommand.ExecuteReader();
+
+                while (Reader.Read())
+                {
+                    if (btn_date.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
+                    {
+                        String subject = Reader.GetString("subject");
+                        String shift = Reader.GetString("shift");
+                        MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nothing!");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            string msg = "";
+            // MessageBox.Show(List.ToString());
+
+
+
+        }
+
         private Form curentFormChild;
         private void OpenChildForm(Form childForm)
         {
