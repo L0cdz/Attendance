@@ -48,5 +48,13 @@ namespace Attendance
 
 
         }
+
+        private void Config_Load(object sender, EventArgs e)
+        {
+            this.tbServer.Text = "localhost";
+            this.tbUser.Text = "root";
+            this.tbData.Text = "attendance";
+            this.tbPassword.Text = "";
+        }
     }
 }

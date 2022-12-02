@@ -143,6 +143,7 @@
             this.MaximumSize = new System.Drawing.Size(818, 818);
             this.Name = "Config";
             this.Text = "Config";
+            this.Load += new System.EventHandler(this.Config_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

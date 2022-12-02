@@ -51,8 +51,10 @@
             this.panel_btn = new System.Windows.Forms.Panel();
             this.btnHome = new System.Windows.Forms.Button();
             this.tbName = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel_body.SuspendLayout();
+            this.panel_teach.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -221,10 +223,12 @@
             // panel_teach
             // 
             this.panel_teach.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_teach.Controls.Add(this.label3);
             this.panel_teach.Location = new System.Drawing.Point(3, 534);
             this.panel_teach.Name = "panel_teach";
             this.panel_teach.Size = new System.Drawing.Size(720, 98);
             this.panel_teach.TabIndex = 2;
+            this.panel_teach.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_teach_Paint);
             // 
             // panel3
             // 
@@ -280,6 +284,16 @@
             this.tbName.Size = new System.Drawing.Size(125, 27);
             this.tbName.TabIndex = 6;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(343, 39);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(50, 20);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "label3";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
             // Page_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -299,6 +313,8 @@
             this.Load += new System.EventHandler(this.Page_Main_Load);
             this.panel1.ResumeLayout(false);
             this.panel_body.ResumeLayout(false);
+            this.panel_teach.ResumeLayout(false);
+            this.panel_teach.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
@@ -331,5 +347,6 @@
         private Panel panel_btn;
         private Button btnHome;
         private TextBox tbName;
+        private Label label3;
     }
 }

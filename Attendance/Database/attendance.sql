@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 30, 2022 lúc 07:24 PM
+-- Thời gian đã tạo: Th12 01, 2022 lúc 04:47 PM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -77,7 +77,9 @@ CREATE TABLE `calender` (
 --
 
 INSERT INTO `calender` (`idCalender`, `subject`, `shift`, `dayTime`, `idAccount`) VALUES
-('10000', 'Cong Nghe Phan Mem', 'Ca3', '2022-11-30', '50000');
+('10000', 'Cong Nghe Phan Mem', 'Ca3', '2022-11-30', '50000'),
+('10002', 'Lap Trinh Web', 'Ca1', '2022-11-30', '50001'),
+('10004', 'He Co So Du Lieu', 'Ca2', '2022-11-30', '50001');
 
 -- --------------------------------------------------------
 

@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
@@ -101,11 +103,57 @@ namespace Attendance
 
             }
         }
+
+        void AddColorIntoMatrixByDate(DateTime date)
+        {
+            DateTime dateTime = new DateTime(date.Year, date.Month, 1);
+            String id = Program.id.ToString();
+            int line = 0;
+            int i = 1;
+            while(i<= dayOfMonth(date))
+            {
+                Connection();
+                int column = dateOfWeek.IndexOf(dateTime.DayOfWeek.ToString());
+                Button btn = List[line][column];
+
+                try
+                {
+                    conn.Open();
+                    MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
+                    MySqlDataReader Reader = mySqlCommand.ExecuteReader();
+                    String dateTime2 = dateTime.ToString();
+
+                    while (Reader.Read())
+                    {
+                        if (dateTime2.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
+                        {
+                            btn.BackColor = Color.Green;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ;
+
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                dateTime = dateTime.AddDays(1);
+
+                if (column >= 6)
+                {
+                    line++;
+                }
+                i += 1;
+            }
+        }
+
         void AddNumberIntoMatrixByDate(DateTime date)
         {
             DeleteCalender();
             DateTime dateTime = new DateTime(date.Year,date.Month,1);
-           
             int line = 0;
 
             for(int i=1; i <= dayOfMonth(date); i++)
@@ -113,12 +161,18 @@ namespace Attendance
                 int column = dateOfWeek.IndexOf(dateTime.DayOfWeek.ToString());
                 Button btn = List[line][column];
                 btn.Text = i.ToString();
+                btn.Click -= new System.EventHandler(this.btnDay_Click);
                 if (btn.Text == "")
                 {
                     btn.Enabled = false;
 
                 }
-                btn.Click += new System.EventHandler(this.btnDay_Click);
+                else
+                {
+                    btn.Enabled = true;
+                    btn.Click += new System.EventHandler(this.btnDay_Click);
+                }
+                
                 if (column >= 6)
                 {
                     line++;
@@ -129,10 +183,6 @@ namespace Attendance
 
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-            dateTimePicker.Value = dateTimePicker.Value.AddMonths(1);
-        }
         void DeleteCalender()
         {
             for(int i=0;i<List.Count; i++)
@@ -141,6 +191,8 @@ namespace Attendance
                 {
                     Button btn = List[i][j];
                     btn.Text = "";
+                    btn.BackColor= Color.White;
+                    btn.Enabled= false;
                 }
             }
         }
@@ -150,7 +202,15 @@ namespace Attendance
         }
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
+            DeleteCalender();
+            panel_teach.Controls.Clear();
             AddNumberIntoMatrixByDate((sender as DateTimePicker).Value);
+            AddColorIntoMatrixByDate((sender as DateTimePicker).Value);
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            dateTimePicker.Value = dateTimePicker.Value.AddMonths(1);
         }
 
         private void btnPrevious_Click(object sender, EventArgs e)
@@ -163,14 +223,19 @@ namespace Attendance
             SetDefauldate();
         }
 
+        private void btnAbsent_Click(object sender, EventArgs e)
+        {
+            ;
+        }
+
         private void btnDay_Click(object sender, EventArgs e)
         {
-
-            Connection();
+            panel_teach.Controls.Clear();
             Button btnAbsent = new Button() { Width = 95, Height = 30 }; ;
             btnAbsent = new Button();
             btnAbsent.Text = "Vắng";
             btnAbsent.Location = new Point(37, 14); ;
+            btnAbsent.Click += new System.EventHandler(this.btnAbsent_Click);
 
             Button btnCompensate = new Button() { Width = 95, Height = 30 }; ;
             btnCompensate = new Button();
@@ -189,9 +254,11 @@ namespace Attendance
 
             String btn_date = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, Result).ToString();
             String id = Program.id.ToString();
-
+            int x = 343;
+            int y = 39;
             try
             {
+                Connection();
                 conn.Open();
                 MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
                 MySqlDataReader Reader = mySqlCommand.ExecuteReader();
@@ -202,7 +269,12 @@ namespace Attendance
                     {
                         String subject = Reader.GetString("subject");
                         String shift = Reader.GetString("shift");
-                        MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
+                        //MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
+                        Label result = new Label() { Width = 2000, Height = 30 }; ; ;
+                        result.Text = btn_date.ToString() + subject + shift;
+                        result.Location = new Point(x, y);
+                        panel_teach.Controls.Add(result);
+                        y += 30;
                     }
                     else
                     {
@@ -221,11 +293,11 @@ namespace Attendance
                 conn.Close();
             }
         }
+
         //button thong tin
         private void btnInfor_Click(object sender, EventArgs e)
         {
             OpenChildForm(new Page_Information());
-
             
         }
 
@@ -307,6 +379,16 @@ namespace Attendance
             {
                 ;
             }
+        }
+
+        private void panel_teach_Paint(object sender, PaintEventArgs e)
+        {
+            ;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            ;
         }
     }
 }
