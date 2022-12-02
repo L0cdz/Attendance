@@ -278,7 +278,7 @@ namespace Attendance
                         String shift = Reader.GetString("shift");
                         //MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
                         Label result = new Label() { Width = 2000, Height = 30 }; ; ;
-                        result.Text = btn_date.ToString() + ":" + subject + " " + shift;
+                        result.Text = btn_date.ToString() + " " + subject + " " + shift;
                         result.Location = new Point(x, y);
                         panel_teach.Controls.Add(result);
                         y += 30;

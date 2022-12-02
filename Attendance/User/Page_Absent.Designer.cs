@@ -35,9 +35,9 @@
             // cbb_Absent
             // 
             this.cbb_Absent.FormattingEnabled = true;
-            this.cbb_Absent.Location = new System.Drawing.Point(158, 118);
+            this.cbb_Absent.Location = new System.Drawing.Point(27, 118);
             this.cbb_Absent.Name = "cbb_Absent";
-            this.cbb_Absent.Size = new System.Drawing.Size(151, 28);
+            this.cbb_Absent.Size = new System.Drawing.Size(282, 28);
             this.cbb_Absent.TabIndex = 0;
             this.cbb_Absent.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
