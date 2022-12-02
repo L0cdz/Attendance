@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
 
 namespace Attendance
@@ -225,7 +226,8 @@ namespace Attendance
 
         private void btnAbsent_Click(object sender, EventArgs e)
         {
-            ;
+            Page_Absent page_Absent = new Page_Absent();
+            page_Absent.Show();
         }
 
         private void btnDay_Click(object sender, EventArgs e)
@@ -263,6 +265,11 @@ namespace Attendance
                 MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
                 MySqlDataReader Reader = mySqlCommand.ExecuteReader();
 
+                while(Program.listAbsent.Count > 0)
+                {
+                    Program.listAbsent.RemoveAt(0);
+                }
+
                 while (Reader.Read())
                 {
                     if (btn_date.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
@@ -271,17 +278,17 @@ namespace Attendance
                         String shift = Reader.GetString("shift");
                         //MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
                         Label result = new Label() { Width = 2000, Height = 30 }; ; ;
-                        result.Text = btn_date.ToString() + subject + shift;
+                        result.Text = btn_date.ToString() + ":" + subject + " " + shift;
                         result.Location = new Point(x, y);
                         panel_teach.Controls.Add(result);
                         y += 30;
+                        Program.listAbsent.Add(result.Text);
                     }
                     else
                     {
                         ;
                     }
                 }
-
             }
             catch (Exception ex)
             {
