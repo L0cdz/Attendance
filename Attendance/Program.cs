@@ -4,7 +4,8 @@ namespace Attendance
     {
         public static String id,name,pwd,email,sdt,sever,database,username,password;
         public static List<String> listAbsent = new List<String>();
-        
+        public static List<String> listCompensate = new List<String>();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>

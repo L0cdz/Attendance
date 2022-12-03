@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Attendance.User;
+using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
@@ -229,7 +230,11 @@ namespace Attendance
             Page_Absent page_Absent = new Page_Absent();
             page_Absent.Show();
         }
-
+        private void btnCompensate_Click(object sender, EventArgs e)
+        {
+            Page_Compensate page_Compensate = new Page_Compensate();
+            page_Compensate.Show();
+        }
         private void btnDay_Click(object sender, EventArgs e)
         {
             panel_teach.Controls.Clear();
@@ -243,6 +248,7 @@ namespace Attendance
             btnCompensate = new Button();
             btnCompensate.Text = "Bù";
             btnCompensate.Location = new Point(37, 49); ;
+            btnCompensate.Click += new System.EventHandler(this.btnCompensate_Click);
 
             panel_btn.Controls.Add(btnAbsent);
             panel_btn.Controls.Add(btnCompensate);
