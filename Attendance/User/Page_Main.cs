@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -237,33 +238,52 @@ namespace Attendance
         }
         private void btnDay_Click(object sender, EventArgs e)
         {
+            int Result; // Biến chứa giá trị kết quả khi ép kiểu thành công
+            var s = ((Button)sender).Text;
+            Result = int.Parse(s);
+
             panel_teach.Controls.Clear();
+            panel_btn.Controls.Clear();
             Button btnAbsent = new Button() { Width = 95, Height = 30 }; ;
             btnAbsent = new Button();
             btnAbsent.Text = "Vắng";
             btnAbsent.Location = new Point(37, 14); ;
-            btnAbsent.Click += new System.EventHandler(this.btnAbsent_Click);
 
             Button btnCompensate = new Button() { Width = 95, Height = 30 }; ;
             btnCompensate = new Button();
             btnCompensate.Text = "Bù";
             btnCompensate.Location = new Point(37, 49); ;
-            btnCompensate.Click += new System.EventHandler(this.btnCompensate_Click);
 
             panel_btn.Controls.Add(btnAbsent);
             panel_btn.Controls.Add(btnCompensate);
 
-
-            int Result; // Biến chứa giá trị kết quả khi ép kiểu thành công
-            var s = ((Button)sender).Text;
-            Result = int.Parse(s);
-
-
+            DateTime checkDay = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, Result);
+            if (checkDay <= DateTime.Now)
+            {
+                btnAbsent.Enabled = false;
+                btnCompensate.Enabled = false;
+            }
+            else
+            {
+                btnAbsent.Enabled = true;
+                btnCompensate.Enabled = true;
+                btnAbsent.Click += new System.EventHandler(this.btnAbsent_Click);
+                btnCompensate.Click += new System.EventHandler(this.btnCompensate_Click);
+            }
 
             String btn_date = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, Result).ToString();
+
+            String btn_date2 = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, Result).ToString();
+            String[] dayRemake = btn_date2.Split(' ');
+            btn_date2 = dayRemake[0];
+            String[] dayRemake2 = btn_date2.Split('/');
+            btn_date2 = dayRemake2[2] + "-" + dayRemake2[0] + "-" + dayRemake2[1];
+            Program.compensateDay = btn_date2;
+
             String id = Program.id.ToString();
-            int x = 343;
-            int y = 39;
+            int x = 193;
+            int y = 0;
+
             try
             {
                 Connection();
@@ -280,15 +300,22 @@ namespace Attendance
                 {
                     if (btn_date.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
                     {
+                        String idCalender = Reader.GetString("idCalender");
                         String subject = Reader.GetString("subject");
                         String shift = Reader.GetString("shift");
-                        //MessageBox.Show(btn_date.ToString() + "\n" + subject + "\n" + shift);
+
+                        String[] arrayDay = btn_date.ToString().Replace(" 12:00:00 AM", "").Split("/");
+                        String newDay = arrayDay[2] + "-" + arrayDay[0] + "-" + arrayDay[1];
+
                         Label result = new Label() { Width = 2000, Height = 30 }; ; ;
-                        result.Text = btn_date.ToString() + " " + subject + " " + shift;
+                        result.Text = newDay + " -- " + subject + " -- " + shift;
                         result.Location = new Point(x, y);
                         panel_teach.Controls.Add(result);
-                        y += 30;
-                        Program.listAbsent.Add(result.Text);
+
+                        String tmp = idCalender + " " + newDay + " " + subject + " " + shift + " " + id;
+
+                        y += 25;
+                        Program.listAbsent.Add(tmp);
                     }
                     else
                     {

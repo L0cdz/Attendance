@@ -58,23 +58,31 @@ namespace Attendance
         }
 
 
-        String selectItem = "";
         private void btn_Absent_Click(object sender, EventArgs e)
         {
             Connection();
             conn.Open();
-            selectItem = cbb_Absent.SelectedItem.ToString();
-            String[] arrayItem = selectItem.Split(" ");
-            String[] arrayDay = arrayItem[0].Split("/");
-            String tmpDay = arrayDay[2] + "-" + arrayDay[0] + "-" + arrayDay[1];
-            String st = "INSERT INTO `absent`(`id`, `subject`, `shift`, `dayTime`) VALUES ('123', " + "'" + arrayItem[3] + "'" + "," + "'" + arrayItem[4] + "'" + "," + "'" + tmpDay + "'" + ")";
+            String[] arrayItem = cbb_Absent.SelectedItem.ToString().Split(" ");
+
+            String subject = "";
+            for(int i=2; i<arrayItem.Length-2; i++)
+            {
+                subject+= arrayItem[i] + " ";
+            }
+
+            String st = "INSERT INTO `history`(`idCalender`, `subject`, `absentShift`, `absentDay`, `compensateShift`, `compensateDay`, `idAccount`) VALUES ('" + arrayItem[0] + "','" + subject.Trim() + "','" + arrayItem[arrayItem.Length-2]  + "','" + arrayItem[1] + "','" + "None" + "','" + "None" + "','" + arrayItem[arrayItem.Length - 1] + "')";
+            String st2 = "DELETE FROM `calender` WHERE idCalender =" + arrayItem[0];
             MySqlCommand sqlcom = new MySqlCommand(st, conn);
+            MySqlCommand sqlcom2 = new MySqlCommand(st2, conn);
 
             try
              {
                 sqlcom.ExecuteNonQuery();
                 MessageBox.Show("insert successful");
-             }
+
+                sqlcom2.ExecuteNonQuery();
+                MessageBox.Show("delete successful");
+            }
              catch (SqlException ex)
              {
                  MessageBox.Show(ex.Message);

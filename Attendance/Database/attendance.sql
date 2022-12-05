@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 01, 2022 lúc 04:47 PM
+-- Thời gian đã tạo: Th12 05, 2022 lúc 02:01 PM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -24,29 +24,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `absent`
---
-
-CREATE TABLE `absent` (
-  `id` varchar(50) NOT NULL,
-  `subject` varchar(50) NOT NULL,
-  `shift` varchar(50) NOT NULL,
-  `dayTime` date NOT NULL,
-  `status` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `account`
 --
 
 CREATE TABLE `account` (
-  `idAccount` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL
+  `idAccount` varchar(25) NOT NULL,
+  `password` varchar(25) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -54,9 +40,9 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`idAccount`, `password`, `name`, `phone`, `email`) VALUES
-('50000', '123456', 'Le Kim Tan Loc', '0962972784', '50000@tdtu.edu.vn'),
-('50001', '123456', 'Tran Quoc Huy', '091231212', '50001@tdtu.edu.vn'),
-('admin', '123456', '=))', '', '');
+('52000', '123456', 'Tran Quoc Huy', '09199999', '[52000@student.tdtu.edu.vn'),
+('52001', '123456', 'Le Kim Tan Loc', '09199989', '[52001@student.tdtu.edu.vn'),
+('admin', '123456', 'boss', '9999999', 'admin@.tdtu.edu.vn');
 
 -- --------------------------------------------------------
 
@@ -65,11 +51,11 @@ INSERT INTO `account` (`idAccount`, `password`, `name`, `phone`, `email`) VALUES
 --
 
 CREATE TABLE `calender` (
-  `idCalender` varchar(50) NOT NULL,
-  `subject` varchar(50) NOT NULL,
-  `shift` varchar(50) NOT NULL,
-  `dayTime` date NOT NULL,
-  `idAccount` varchar(50) NOT NULL
+  `idCalender` int(11) NOT NULL,
+  `subject` varchar(100) NOT NULL,
+  `shift` varchar(10) NOT NULL,
+  `dayTime` datetime DEFAULT NULL,
+  `idAccount` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -77,22 +63,42 @@ CREATE TABLE `calender` (
 --
 
 INSERT INTO `calender` (`idCalender`, `subject`, `shift`, `dayTime`, `idAccount`) VALUES
-('10000', 'Cong Nghe Phan Mem', 'Ca3', '2022-11-30', '50000'),
-('10002', 'Lap Trinh Web', 'Ca1', '2022-11-30', '50001'),
-('10004', 'He Co So Du Lieu', 'Ca2', '2022-11-30', '50001');
+(13, 'Cong nghe phan mem', 'Ca2', '2022-12-05 00:00:00', '52000'),
+(14, 'Cong nghe Java', 'Ca1', '2022-12-05 00:00:00', '52001'),
+(16, 'TH Cong nghe Java', 'Ca1', '2022-12-07 00:00:00', '52001'),
+(17, 'TH Cong nghe Java', 'Ca2', '2022-12-07 00:00:00', '52001'),
+(20, 'Cong nghe phan mem 3', 'Ca4', '2022-12-05 00:00:00', '52000'),
+(22, '[value-2]', '[value-3]', '2022-12-12 00:00:00', '52000'),
+(23, '[valuasfe-2]', '[value-3]', '2022-12-12 00:00:00', '52000'),
+(24, '[valfsfasue-2]', '[value-3]', '2022-12-12 00:00:00', '52000'),
+(25, '[valfsassfaue-2]', '[value-3]', '2022-12-12 00:00:00', '52000');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `compensate`
+-- Cấu trúc bảng cho bảng `history`
 --
 
-CREATE TABLE `compensate` (
-  `id` varchar(50) NOT NULL,
-  `subject` varchar(50) NOT NULL,
-  `shift` varchar(50) NOT NULL,
-  `dayTime` date NOT NULL
+CREATE TABLE `history` (
+  `idCalender` int(11) NOT NULL,
+  `subject` varchar(100) NOT NULL,
+  `absentShift` varchar(10) NOT NULL,
+  `absentDay` varchar(50) NOT NULL,
+  `compensateShift` varchar(10) NOT NULL,
+  `compensateDay` varchar(50) NOT NULL,
+  `idAccount` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `history`
+--
+
+INSERT INTO `history` (`idCalender`, `subject`, `absentShift`, `absentDay`, `compensateShift`, `compensateDay`, `idAccount`) VALUES
+(13, 'Cong nghe phan mem', 'Ca2', '2022-12-5', 'Ca 1', '2022-12-13', '52000'),
+(15, 'TH Cong nghe phan mem', 'Ca3', '2022-12-5', '', '2022-12-16', '52000'),
+(19, 'Cong nghe phan mem 2', 'Ca3', '2022-12-5', 'None', 'None', '52000'),
+(20, 'Cong nghe phan mem 3', 'Ca4', '2022-12-5', 'Ca 1', '2022-12-10', '52000'),
+(21, '[value-2]', '[value-3]', '2022-12-12', 'None', 'None', '52000');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -108,7 +114,25 @@ ALTER TABLE `account`
 -- Chỉ mục cho bảng `calender`
 --
 ALTER TABLE `calender`
+  ADD PRIMARY KEY (`idCalender`),
   ADD KEY `idAccount` (`idAccount`);
+
+--
+-- Chỉ mục cho bảng `history`
+--
+ALTER TABLE `history`
+  ADD PRIMARY KEY (`idCalender`),
+  ADD KEY `idAccount` (`idAccount`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `calender`
+--
+ALTER TABLE `calender`
+  MODIFY `idCalender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -119,6 +143,12 @@ ALTER TABLE `calender`
 --
 ALTER TABLE `calender`
   ADD CONSTRAINT `calender_ibfk_1` FOREIGN KEY (`idAccount`) REFERENCES `account` (`idAccount`);
+
+--
+-- Các ràng buộc cho bảng `history`
+--
+ALTER TABLE `history`
+  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`idAccount`) REFERENCES `account` (`idAccount`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

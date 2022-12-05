@@ -61,6 +61,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Name = "Page_History";
             this.Text = "Page_History";
+            this.Load += new System.EventHandler(this.Page_History_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
