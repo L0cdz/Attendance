@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -84,18 +85,57 @@ namespace Attendance
         {
             DataGridViewRow dataGridViewRow = dataGridView1.Rows[selectedRow];
 
+
             dataGridViewRow.Cells[2].Value = tbName.Text;
             dataGridViewRow.Cells[1].Value = tbPass.Text;
             dataGridViewRow.Cells[3].Value = tbSDT.Text;
             dataGridViewRow.Cells[4].Value = tbEmail.Text;
+            string id = dataGridViewRow.Cells[0].Value.ToString();
+            Connection();
 
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE account SET password = " + tbPass.Text + ", name = " + tbName.Text + ", phone = " + tbSDT.Text
+         + ", email = " + tbEmail.Text + "WHERE idAccount = " + id);
+                // cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Thanh Cong");
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+            DataGridViewRow dataGridViewRow = dataGridView1.Rows[selectedRow];
+            string id = dataGridViewRow.Cells[0].Value.ToString();
             selectedRow = dataGridView1.CurrentCell.RowIndex;
             dataGridView1.Rows.RemoveAt(selectedRow);
+            Connection();
+            String dele = "DELETE FROM `calender` WHERE idCalender =" + id;
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(dele);
+                // cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Thanh Cong");
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
