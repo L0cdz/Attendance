@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.VisualBasic;
+using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Utilities.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,9 +8,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Xml.Linq;
+using System.Collections;
 
 namespace Attendance
 {
@@ -80,7 +86,7 @@ namespace Attendance
             conn.Clone();
             
         }
-       
+       //edit account
         private void button3_Click(object sender, EventArgs e)
         {
             DataGridViewRow dataGridViewRow = dataGridView1.Rows[selectedRow];
@@ -92,16 +98,13 @@ namespace Attendance
             dataGridViewRow.Cells[4].Value = tbEmail.Text;
             string id = dataGridViewRow.Cells[0].Value.ToString();
             Connection();
-
-
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("UPDATE account SET password = " + tbPass.Text + ", name = " + tbName.Text + ", phone = " + tbSDT.Text
-         + ", email = " + tbEmail.Text + "WHERE idAccount = " + id);
+                String query = "UPDATE `account` SET `password`= " + "'" + tbPass.Text + "'" + "  ,`name`=" + "'" + tbName.Text + "'" + ",`phone`= " + "'" + tbSDT.Text + "'" + ",`email`=" + "'" + tbEmail.Text + "'" + "WHERE idAccount = '" + id + "'";
+                MySqlCommand sqlcom = new MySqlCommand(query, conn);
                 // cmd.Connection = conn;
-                cmd.ExecuteNonQuery();
-
+                sqlcom.ExecuteNonQuery();
                 MessageBox.Show("Thanh Cong");
                 conn.Close();
             }
@@ -109,9 +112,8 @@ namespace Attendance
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
-
+        //xoa account
         private void button2_Click(object sender, EventArgs e)
         {
 
@@ -120,15 +122,40 @@ namespace Attendance
             selectedRow = dataGridView1.CurrentCell.RowIndex;
             dataGridView1.Rows.RemoveAt(selectedRow);
             Connection();
-            String dele = "DELETE FROM `calender` WHERE idCalender =" + id;
+            String dele = "DELETE FROM `account` WHERE idAccount = '" + id + "'";
 
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(dele);
+                MySqlCommand sqlcom = new MySqlCommand(dele, conn);
                 // cmd.Connection = conn;
-                cmd.ExecuteNonQuery();
+                sqlcom.ExecuteNonQuery();
 
+                MessageBox.Show("Thanh Cong");
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        //Them account
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string name = tbName.Text;
+            string pas= tbPass.Text;
+            string pohne = tbSDT.Text;
+            string em = tbEmail.Text;
+            Random rd = new Random();
+            string id = "5200" + rd.Next(1, 200).ToString();
+            Connection();
+            try
+            {
+                conn.Open();
+                String query = "INSERT INTO `account`(`idAccount`, `password`, `name`, `phone`, `email`) VALUES('" +id + "'" + ", '" +pas + "', '" +name + "', '" +pohne + "', '" +em + "')";
+                MySqlCommand sqlcom = new MySqlCommand(query, conn);
+                // cmd.Connection = conn;
+                sqlcom.ExecuteNonQuery();
                 MessageBox.Show("Thanh Cong");
                 conn.Close();
             }

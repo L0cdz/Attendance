@@ -52,10 +52,9 @@ namespace Attendance
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("UPDATE account SET password = " + tbPass.Text + ", name = " + tbName.Text + ", phone = " + tbSDT.Text
-         + ", email = " + tbEmail.Text + "WHERE idAccount = " + Program.id);
-               // cmd.Connection = conn;
-                cmd.ExecuteNonQuery();
+                String query = "UPDATE `account` SET `password`= " + "'" + tbPass.Text + "'" + "  ,`name`=" + "'" + tbName.Text+ "'" + ",`phone`= " + "'" + tbSDT.Text + "'" + ",`email`=" + "'" + tbEmail.Text+ "'" + "WHERE idAccount = '" + Program.id + "'";
+                MySqlCommand sqlcom = new MySqlCommand(query, conn);
+                sqlcom.ExecuteNonQuery();
 
                 MessageBox.Show("Thanh Cong");
                 conn.Close();
