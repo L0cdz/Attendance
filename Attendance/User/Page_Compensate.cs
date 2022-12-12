@@ -112,11 +112,11 @@ namespace Attendance.User
             }
 
             String st = "UPDATE history set compensateShift = '" + selectShift + "', compensateDay =" + "'" + Program.compensateDay + "' WHERE idCalender =" + arrayItem[0];
-            //String st2 = "INSERT INTO `calender`(`idCalender`, `subject`, `shift`, `dayTime`, `idAccount`) VALUES ('" + arrayItem[0] + "','" + subject + "','" + arrayItem[arrayItem.Length - 3] + "','" + "','" + arrayItem[arrayItem.Length - 2] + "','" + arrayItem[arrayItem.Length - 1] + "')";
+            String st2 = "UPDATE calender set status = 1, shift = '" + selectShift + "', dayTime = '" + Program.compensateDay + "' WHERE `idCalender` = '" + arrayItem[0] + "'";
             MessageBox.Show(st);
-            //MessageBox.Show(st2);
-            MySqlCommand sqlcom = new MySqlCommand();
-
+            MessageBox.Show(st2);
+            MySqlCommand sqlcom = new MySqlCommand(st, conn);
+            MySqlCommand sqlcom2 = new MySqlCommand(st2, conn);
             try
             {
                 sqlcom.ExecuteNonQuery();
@@ -125,13 +125,17 @@ namespace Attendance.User
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.Message);
-                MessageBox.Show("asdfjaksfjalksclmmmmmmmmmmmmmmm");
+                MessageBox.Show("eror");
             }
 
             conn.Close();
             //MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
             //MySqlDataReader Reader = mySqlCommand.ExecuteReader();
             this.Close();
+
+            Page_Main page_Main = new Page_Main();
+            page_Main.Show();
+            this.Hide();
         }
     }
 }

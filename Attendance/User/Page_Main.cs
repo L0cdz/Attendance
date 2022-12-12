@@ -128,7 +128,7 @@ namespace Attendance
 
                     while (Reader.Read())
                     {
-                        if (dateTime2.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
+                        if (dateTime2.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")) && "1".Equals(Reader.GetString("status")))
                         {
                             btn.BackColor = Color.Green;
                         }
@@ -298,7 +298,7 @@ namespace Attendance
 
                 while (Reader.Read())
                 {
-                    if (btn_date.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")))
+                    if (btn_date.Equals(Reader.GetString("dayTime")) && id.Equals(Reader.GetString("idAccount")) && "1".Equals(Reader.GetString("status")))
                     {
                         String idCalender = Reader.GetString("idCalender");
                         String subject = Reader.GetString("subject");

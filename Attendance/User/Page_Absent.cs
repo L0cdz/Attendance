@@ -71,7 +71,8 @@ namespace Attendance
             }
 
             String st = "INSERT INTO `history`(`idCalender`, `subject`, `absentShift`, `absentDay`, `compensateShift`, `compensateDay`, `idAccount`) VALUES ('" + arrayItem[0] + "','" + subject.Trim() + "','" + arrayItem[arrayItem.Length-2]  + "','" + arrayItem[1] + "','" + "None" + "','" + "None" + "','" + arrayItem[arrayItem.Length - 1] + "')";
-            String st2 = "DELETE FROM `calender` WHERE idCalender =" + arrayItem[0];
+            String st2 = "UPDATE calender set status = 0 WHERE `idCalender` = '" + arrayItem[0] + "'";
+            MessageBox.Show(st2);
             MySqlCommand sqlcom = new MySqlCommand(st, conn);
             MySqlCommand sqlcom2 = new MySqlCommand(st2, conn);
 
@@ -81,7 +82,7 @@ namespace Attendance
                 MessageBox.Show("insert successful");
 
                 sqlcom2.ExecuteNonQuery();
-                MessageBox.Show("delete successful");
+                MessageBox.Show("update successful");
             }
              catch (SqlException ex)
              {
@@ -92,6 +93,10 @@ namespace Attendance
                 //MySqlCommand mySqlCommand = new MySqlCommand("select *from calender", conn);
                 //MySqlDataReader Reader = mySqlCommand.ExecuteReader();
              this.Close();
+
+            Page_Main page_Main = new Page_Main();
+            page_Main.Show();
+            this.Hide();
         }
     }
 }
