@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Utilities.Collections;
 using System;
@@ -9,6 +10,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -72,17 +74,15 @@ namespace Attendance
 
             String st = "INSERT INTO `history`(`idCalender`, `subject`, `absentShift`, `absentDay`, `compensateShift`, `compensateDay`, `idAccount`) VALUES ('" + arrayItem[0] + "','" + subject.Trim() + "','" + arrayItem[arrayItem.Length-2]  + "','" + arrayItem[1] + "','" + "None" + "','" + "None" + "','" + arrayItem[arrayItem.Length - 1] + "')";
             String st2 = "UPDATE calender set status = 0 WHERE `idCalender` = '" + arrayItem[0] + "'";
-            MessageBox.Show(st2);
+
             MySqlCommand sqlcom = new MySqlCommand(st, conn);
             MySqlCommand sqlcom2 = new MySqlCommand(st2, conn);
 
             try
              {
                 sqlcom.ExecuteNonQuery();
-                MessageBox.Show("insert successful");
 
                 sqlcom2.ExecuteNonQuery();
-                MessageBox.Show("update successful");
             }
              catch (SqlException ex)
              {
@@ -96,7 +96,6 @@ namespace Attendance
 
             Page_Main page_Main = new Page_Main();
             page_Main.Show();
-            this.Hide();
         }
     }
 }

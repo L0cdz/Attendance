@@ -94,7 +94,6 @@ namespace Attendance.User
             conn.Open();
 
             selectShift = cbbShift.SelectedItem.ToString();
-            MessageBox.Show(selectShift);
 
             if (selectShift == "")
             {
@@ -113,14 +112,14 @@ namespace Attendance.User
 
             String st = "UPDATE history set compensateShift = '" + selectShift + "', compensateDay =" + "'" + Program.compensateDay + "' WHERE idCalender =" + arrayItem[0];
             String st2 = "UPDATE calender set status = 1, shift = '" + selectShift + "', dayTime = '" + Program.compensateDay + "' WHERE `idCalender` = '" + arrayItem[0] + "'";
-            MessageBox.Show(st);
-            MessageBox.Show(st2);
+
             MySqlCommand sqlcom = new MySqlCommand(st, conn);
             MySqlCommand sqlcom2 = new MySqlCommand(st2, conn);
             try
             {
                 sqlcom.ExecuteNonQuery();
-                MessageBox.Show("insert successful");
+
+                sqlcom2.ExecuteNonQuery();
             }
             catch (SqlException ex)
             {

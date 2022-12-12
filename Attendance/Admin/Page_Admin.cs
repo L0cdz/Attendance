@@ -309,7 +309,11 @@ namespace Attendance
             }
             MessageBox.Show("Invalid");
         }
- 
+
+        private void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            ;
+        }
     }
 }
 
